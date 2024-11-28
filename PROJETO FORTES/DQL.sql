@@ -1,31 +1,41 @@
-SELECT * FROM PROJETOS;
+-- Seleciona todos os dados da tabela de projetos
+SELECT * FROM Projects;
 
-SELECT * FROM DONATARIOS;
+-- Seleciona todos os dados da tabela de doadores
+SELECT * FROM Donors;
 
-SELECT DOACOES.ID_DOACAO, DOACOES.VALOR, DOACOES.DATA, DOACOES.TIPO_DOACAO, PROJETOS.NOME_PROJETO
-FROM DOACOES
-JOIN PROJETOS ON DOACOES.ID_PROJETO = PROJETOS.ID_PROJETO;
+-- Seleciona informações de doações juntamente com o nome do projeto associado
+SELECT Donations.DonationID, Donations.Amount, Donations.DonationDate, Donations.DonationType, Projects.ProjectName
+FROM Donations
+JOIN Projects ON Donations.ProjectID = Projects.ProjectID;
 
-SELECT RELATORIO.ID_RELATORIO, RELATORIO.DATA_ENVIO, RELATORIO.TIPO_RELATORIO, PROJETOS.NOME_PROJETO
-FROM RELATORIO
-JOIN PROJETOS ON RELATORIO.ID_PROJETO = PROJETOS.ID_PROJETO;
+-- Seleciona informações de relatórios juntamente com o nome do projeto associado
+SELECT Reports.ReportID, Reports.SubmissionDate, Reports.ReportType, Projects.ProjectName
+FROM Reports
+JOIN Projects ON Reports.ProjectID = Projects.ProjectID;
 
-SELECT * FROM EDITAL;
+-- Seleciona todos os dados da tabela de editais
+SELECT * FROM Notices;
 
-SELECT * FROM COMISSAO;
+-- Seleciona todos os dados da tabela de comissão
+SELECT * FROM Commission;
 
-SELECT PROJETOS.NOME_PROJETO, COMISSAO.NOME_MEMBRO, COMISSAO.CARGO
-FROM PROJETOS_COMISSAO
-JOIN PROJETOS ON PROJETOS_COMISSAO.ID_PROJETO = PROJETOS.ID_PROJETO
-JOIN COMISSAO ON PROJETOS_COMISSAO.ID_COMISSAO = COMISSAO.ID_COMISSAO;
+-- Seleciona o nome dos projetos e os membros da comissão associados a esses projetos
+SELECT Projects.ProjectName, Commission.MemberName, Commission.Position
+FROM ProjectCommission
+JOIN Projects ON ProjectCommission.ProjectID = Projects.ProjectID
+JOIN Commission ON ProjectCommission.CommissionID = Commission.CommissionID;
 
-SELECT * FROM PROJETOS
-WHERE STATUS = 'Em Andamento';
+-- Seleciona todos os projetos que estão em andamento
+SELECT * FROM Projects
+WHERE Status = 'Em Andamento';
 
-SELECT * FROM DONATARIOS
-WHERE TIPO_DONATARIO = 'Privada';
+-- Seleciona todos os doadores do tipo 'Privada'
+SELECT * FROM Donors
+WHERE DonorType = 'Privada';
 
-SELECT PROJETOS.NOME_PROJETO, COUNT(DOACOES.ID_DOACAO) AS NUMERO_DOACOES
-FROM DOACOES
-JOIN PROJETOS ON DOACOES.ID_PROJETO = PROJETOS.ID_PROJETO
-GROUP BY PROJETOS.NOME_PROJETO;
+-- Seleciona o nome dos projetos e o número de doações associadas a cada projeto
+SELECT Projects.ProjectName, COUNT(Donations.DonationID) AS NumberOfDonations
+FROM Donations
+JOIN Projects ON Donations.ProjectID = Projects.ProjectID
+GROUP BY Projects.ProjectName;
